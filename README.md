@@ -1,2 +1,2 @@
-# vaniall-js-projects
-Author: Mashhood Ahmad
+# vanialla-js-projects
+Author - Mashhood Ahmad
