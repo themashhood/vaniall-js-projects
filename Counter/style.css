@@ -1,0 +1,55 @@
+/* Global Styles */
+body {
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  padding-top: 80px;
+  margin: 0;
+}
+
+/* Stopwatch Title */
+.heading {
+  font-size: 3rem;
+  margin-bottom: 30px;
+  text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.2);
+}
+
+/* Display Styling */
+.mainDisplay {
+  font-size: 6rem;
+  margin: 20px auto;
+  width: 200px;
+  height: 120px;
+  line-height: 120px;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 10px #00ffc8, 0 0 20px #00ffc8;
+  transition: transform 0.2s ease;
+}
+
+/* Glow on Update (used via JS) */
+.mainDisplay.updated {
+  transform: scale(1.1);
+  color: #00ffc8;
+  text-shadow: 0 0 20px #00ffc8;
+}
+
+/* Buttons */
+button {
+  background-color: #1e1e2f;
+  border: 2px solid #00ffc8;
+  color: #00ffc8;
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #00ffc8;
+  color: #1e1e2f;
+  box-shadow: 0 0 15px #00ffc8;
+}
