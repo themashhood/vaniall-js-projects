@@ -10,13 +10,22 @@ let mainDisplay = document.querySelector(".mainDisplay");
 mainDisplay.textContent = counter;
 
 
-function startFunc() {
-   intervalID ??= setInterval(() =>{
-    counter++;
-    mainDisplay.textContent = counter;
-    console.log(counter)
-   }, 1000)
-};
+// function startFunc() {
+//    intervalID ??= setInterval(() =>{
+//     counter++;
+//     mainDisplay.textContent = counter;
+//     console.log(counter)
+//    }, 1000)
+// };
+
+function startFunc(){
+    if (intervalID) return
+    intervalID = setInterval(() => {
+       counter++;
+       mainDisplay.textContent= counter;
+       console.log(counter) 
+    }, 1000)
+}
 
 function stopFunc(){
     clearInterval(intervalID)
