@@ -9,16 +9,41 @@
 <body>
     <div class="inPlan">
         <h1 id="mainheading">In Plans</h1>
+        <div class="inPlanTasks">
+
+        </div>
     </div>
 
     <div class="inProgress">
         <h1 id="mainheadingInProgress">In Progress</h1>
+        <div class="inProgressTasks">
+
+        </div>
 
     </div>
 
     <div class="completed">
         <h1 id="mainheadingCompleted">Completed</h1>
+        <div class="completedTasks">
+
+        </div>
     </div>
+
+    <div class="addNewTask">
+        <button id="addNewTaskBtn">Add New Task</button> 
+        <form id="addNewTaskForm">
+            <label for="taskTitle">Add Task</label><br>
+            <input type="text" id="taskTitle" name="Task title"><br>
+            <label for="taskDetails">Add Details</label><br>
+            <input type="text" id="taskDetails" name="Task details"><br>
+            <label for="taskProgress">Progress</label><br>
+            <input type="text" id="taskProgress" name="Task progress"><br>
+            <br><input type="submit" value="Submit">
+            <span id="addDetailsError" style="color: red;"></span>
+        </form>
+    </div>
+
+   
     
     <script src="dom.js"></script>
     <script src="state.js"></script>
