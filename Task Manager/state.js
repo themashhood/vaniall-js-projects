@@ -187,5 +187,5 @@ function displayInCompleted(){
 }
 
 //add important tasks (star) functionlaity
-// you can add more buttons in future
+//can add more buttons in future
 //add drag and drop functionlaity
