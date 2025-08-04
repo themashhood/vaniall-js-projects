@@ -1,3 +1,83 @@
 body{
-    display: flex;
+    background-color: black;
 }
+
+.titleHeading{
+    text-align: center;
+    color: #FF7A30;
+    margin-top: 2%;
+    padding-bottom: 5px;
+    margin-bottom: 2%;
+}
+
+.taskManagerWindow{
+    margin-top: 0px;
+    padding-top: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 0%;
+}
+
+.inPlan{
+    margin: 10px;
+    width: 20%;
+    margin-right: 10%;
+    margin-left: 0%;
+    background-color: #465C88;
+    #mainheading{
+        vertical-align: top;
+        text-align: center;
+        color: #FF7A30;
+    }
+    
+}
+
+.inProgress{
+    
+    margin: 10px;
+    width: 20%;
+    margin-right: 10%;
+    background-color: #465C88;
+    #mainheadingInProgress{
+        vertical-align: top;
+        text-align: center;
+        color: #FF7A30;
+    }
+}
+
+.completed{
+    margin: 10px;
+    width: 20%;
+    background-color: #465C88;
+    #mainheadingCompleted{
+        vertical-align: top;
+        text-align: center;
+        color: #FF7A30;
+    }
+}
+
+.addNewTask{
+    display: none;
+    position: fixed;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+#addNewTaskForm{
+      background-color: #fefefe;
+     margin: 5% auto; /* 5% from the top and centered */
+     padding: 20px;
+     border: 1px solid #888;
+     width: 80%; /* Could be more or less, depending on screen size */
+      max-width: 500px; /* Max width for larger screens */
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    
+}
+

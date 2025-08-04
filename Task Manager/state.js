@@ -59,10 +59,21 @@ document.getElementById("addNewTaskForm").addEventListener("submit" , function(e
         newTask.addToInPlan();
         this.reset()
         displayInPlan();
+        closeTheForm();
     }
 })
 
-//DOM for displaying the InPlan, In Progress, Completed
+function openAddToTaskForm(){
+    document.querySelector(".addNewTask").style.display = "block"
+}
+
+function closeTheForm() {
+    document.querySelector(".addNewTask").style.display = "none"
+}
+
+
+
+//DOM for displaying the In Plan, In Progress, Completed
 
 const inPlanDiv = document.querySelector(".inPlanTasks");
 function displayInPlan () {
@@ -74,7 +85,7 @@ function displayInPlan () {
         inPlanDiv.appendChild(h1);
 
         //display details
-        const p = document.createElement("p");
+        const p = document.createElement("p");  
         p.textContent = inPlan[index].details;
         inPlanDiv.appendChild(p)
 
