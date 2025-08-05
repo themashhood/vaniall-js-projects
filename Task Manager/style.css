@@ -10,6 +10,7 @@ body{
     margin-bottom: 2%;
 }
 
+
 .taskManagerWindow{
     margin-top: 0px;
     padding-top: 0px;
@@ -71,13 +72,43 @@ body{
 }
 
 #addNewTaskForm{
-      background-color: #fefefe;
-     margin: 5% auto; /* 5% from the top and centered */
-     padding: 20px;
-     border: 1px solid #888;
-     width: 80%; /* Could be more or less, depending on screen size */
-      max-width: 500px; /* Max width for larger screens */
-      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    background-color: #fefefe;
+    margin: 5% auto; /* 5% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; 
+    max-width: 500px; 
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
     
 }
 
+#addNewTaskBtn{
+    margin-bottom: auto;
+    position: absolute;
+    left: 100px;
+}
+
+#trashBinOpenBtn{
+    margin-bottom: auto;
+    position: absolute;
+    right: 100px;
+}
+
+.trashBinWindow{
+    display: none;
+    position: fixed;
+    z-index: 1; 
+    left: 25%;
+    top: 25%;
+    width: 50%; 
+    height: 50%;
+    overflow: auto; 
+    background-color: #fefefe;
+    /* background-color: rgba(0,0,0,0.4); */
+    padding-top: 60px;
+    #trashBinHeading{
+        color: #FF7A30;
+        text-align: center;
+    }
+
+}

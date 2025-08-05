@@ -10,41 +10,76 @@ class Task{
         this.title= title;
         this.details= details;
         this.progress= progress;
+        this.currentStatus = "inPlan";
     }
 
     addToInPlan(){
-        inPlan.push(this)
+        inPlan.push(this);
+        saveToLocalStorage();
     }
 
     moveToInProgress() {
         const index = inPlan.indexOf(this);
         inPlan.splice(index, 1);
         inProgress.push(this);
+        this.currentStatus = "inProgress";
+        saveToLocalStorage();
     }
 
     moveToCompletedfromProgress(){
         const index = inProgress.indexOf(this);
         inProgress.splice(index, 1);
         completed.push(this);
+        this.currentStatus = "completed";
+        saveToLocalStorage();
     }
 
     moveToCompletedfromPlan(){
         const index = inPlan.indexOf(this);
         inPlan.splice(index,1)
         completed.push(this);
+        saveToLocalStorage();
     }
 
-    delete(){ //deletes the task from main page and moves it to trashbin
+    delete(){
         const arrays = [inPlan, inProgress, completed]
         for (const array of arrays){
-            const index = arrays.indexOf(this);
-            array.splice(index, 1);
+            const index = array.indexOf(this);
+            if (index !== -1) {array.splice(index, 1);
             break;
+            }
         }
         trashBin.push(this);
+        saveToLocalStorage();
     }
 }
-//trashbin recovery functionalty to be added
+
+//local storage
+function saveToLocalStorage(){
+    const data = {
+        inPlan,
+        inProgress,
+        completed,
+        trashBin,
+    };
+    localStorage.setItem("primusData", JSON.stringify(data));
+} 
+
+function loadFromLocalStorage(){
+    const storedData = JSON.parse(localStorage.getItem("primusData"));
+    if (storedData) {
+        inPlan = storedData.inPlan.map(task => new Task(task.title, task.details, task.progress, task.currentStatus || "inPlan"));
+        inProgress = storedData.inProgress.map(task => new Task(task.title, task.details, task.progress, task.currentStatus || "inProgress"));
+        completed = storedData.completed.map(task => new Task(task.title, task.details, task.progress, task.currentStatus || "completed"));
+        trashBin = storedData.trashBin.map(task => new Task (task.title, task.details, task.progress, task.currentStatus));
+    }
+    refreshAll();
+}
+
+//load previous instance
+window.addEventListener("DOMContentLoaded", () => {
+    loadFromLocalStorage();
+});
 
 //function to add new tasks
 document.getElementById("addNewTaskForm").addEventListener("submit" , function(event){
@@ -71,87 +106,122 @@ function closeTheForm() {
     document.querySelector(".addNewTask").style.display = "none"
 }
 
+//TrashBin display
+function openTrashBin(){
+    document.querySelector(".trashBinWindow").style.display = "block"
+}
 
+function closeTrashBin(){
+    document.querySelector(".trashBinWindow").style.display = "none"
+}
+//DOM for displaying the In Plan, In Progress, Completed, TrashBin
 
-//DOM for displaying the In Plan, In Progress, Completed
+function refreshAll(){
+    displayInPlan();
+    displayInProgress();
+    displayInCompleted();
+    displayInTrashBin();
+    saveToLocalStorage();
+}
+
+function generateElement (tag, taskAttribute, task, divName){
+    const tagName = document.createElement(tag);
+    tagName.textContent = task[taskAttribute];
+    divName.appendChild(tagName);
+}
+
+function generateButtons (task, divName) {
+    //move button
+    const btn = document.createElement("button");
+        divName.appendChild(btn);
+        if (divName === inPlanDiv) {
+            btn.textContent = "Move to In Progress"
+        } else if (divName === inProgressDiv) {
+            btn.textContent = "Move to Completed"
+        } else if (divName === completedDiv) {
+            divName.removeChild(btn);
+        };
+        btn.addEventListener("click" , () => {
+            if (divName === inPlanDiv) {
+                task.moveToInProgress()
+            } else if (divName === inProgressDiv) {
+                task.moveToCompletedfromProgress()
+            };
+            refreshAll();
+        })
+    //delete btn
+     const deleteBtn = document.createElement("button");
+        divName.appendChild(deleteBtn);
+        deleteBtn.textContent = "Move to Trash";
+        deleteBtn.addEventListener("click" , () => {
+            task.delete();
+            if (divName === inPlanDiv){
+                displayInPlan()
+            } else if (divName === inProgressDiv){
+                displayInProgress();
+            } else if(divName === completedDiv){
+                displayInCompleted();
+            }
+            displayInTrashBin();
+            refreshAll();
+        })
+
+} //function of buttons can be improved (clean code) based upon chatgpt feedback. not updating the code rn.
+
+function recoverAndDeleteFromTrashBin(task){
+    const recoverBtn = document.createElement("button");
+    document.querySelector("#trashBinTasks").appendChild(recoverBtn);
+    recoverBtn.textContent = "Recover";
+    const index = trashBin.indexOf(task);
+    recoverBtn.addEventListener("click", () => {
+        const originArray = task.currentStatus; 
+        if (originArray == "inPlan"){
+            inPlan.push(task)
+            refreshAll();
+        } else if(originArray == "inProgress"){
+            inProgress.push(task)
+            refreshAll();
+        } else if(originArray == "completed"){
+            completed.push(task);
+            refreshAll();
+        }
+        if (index !== -1){
+            trashBin.splice(index, 1)
+            refreshAll();
+        }
+        
+    })
+
+    const deleteBtn = document.createElement("button");
+    document.querySelector("#trashBinTasks").appendChild(deleteBtn);
+    deleteBtn.textContent = "Delete Permanently"
+    deleteBtn.addEventListener("click", () => {
+        const index = trashBin.indexOf(task);
+        if (index !== -1) {
+            trashBin.splice(index, 1);
+        }    
+        refreshAll();
+    })
+}
 
 const inPlanDiv = document.querySelector(".inPlanTasks");
 function displayInPlan () {
     inPlanDiv.innerHTML = "";
-    inPlan.forEach(object => {
-        const index = inPlan.indexOf(object);
-        const h1 = document.createElement("h1");
-        h1.textContent = inPlan[index].title;
-        inPlanDiv.appendChild(h1);
-
-        //display details
-        const p = document.createElement("p");  
-        p.textContent = inPlan[index].details;
-        inPlanDiv.appendChild(p)
-
-        //display progress
-        const p1 = document.createElement("p");
-        p1.textContent = inPlan[index].progress;
-        inPlanDiv.appendChild(p1);
-
-        //button to move to inProgress 
-        if (h1 || p) {const btn = document.createElement("button");
-        inPlanDiv.appendChild(btn);
-        btn.textContent = "Move to In Progress"
-        btn.addEventListener("click" , () => {
-            object.moveToInProgress();
-            displayInPlan();
-            displayInProgress();
-        })}
-
-        //delete button
-        if (h1 || p) {const deleteBtn = document.createElement("button");
-        inPlanDiv.appendChild(deleteBtn);
-        deleteBtn.textContent = "Move to Trash";
-        deleteBtn.addEventListener("click" , () => {
-            object.delete();
-            displayInPlan();
-        })}
+    inPlan.forEach(task => {
+        generateElement("h1", "title",task, inPlanDiv) //displays title
+        generateElement("p", "details", task, inPlanDiv) //displays details
+        generateElement("p", "progress", task, inPlanDiv) // displays progress
+        generateButtons(task, inPlanDiv)
 } )}
 
 const inProgressDiv = document.querySelector(".inProgressTasks");
 function displayInProgress() {
     inProgressDiv.innerHTML = "";
-    displayInPlan()
-    inProgress.forEach(object =>{
-    const index = inProgress.indexOf(object);
-    const h1 = document.createElement("h1");
-    h1.textContent = inProgress[index].title;
-    inProgressDiv.appendChild(h1);
-
-    //display details
-    const p = document.createElement("p");
-    p.textContent = inProgress[index].details;
-    inProgressDiv.appendChild(p);
-
-    //display progress
-    const p1 = document.createElement("p");
-    p1.textContent = inProgress[index].progress;
-    inProgressDiv.appendChild(p1);
-
-    //button to move to completed 
-    const btn = document.createElement("button");
-    inProgressDiv.appendChild(btn);
-    btn.textContent = "Move to Completed"
-    btn.addEventListener("click" , () => {
-        object.moveToCompletedfromProgress();
-        displayInProgress();
-        displayInCompleted();
-    })
-
-    //delete button
-        const deleteBtn = document.createElement("button");
-        inProgressDiv.appendChild(deleteBtn);
-        deleteBtn.textContent = "Move to Trash";
-        deleteBtn.addEventListener("click" , () => {
-            object.delete();
-            displayInProgress();
-        })
+    inProgress.forEach(task =>{
+    generateElement("h1", "title",task, inProgressDiv) //displays title
+    generateElement("p", "details", task, inProgressDiv) //displays details
+    generateElement("p", "progress", task, inProgressDiv) // displays progress
+    generateButtons(task, inProgressDiv)
 })}
 
 const completedDiv = document.querySelector(".completedTasks");
@@ -160,32 +230,38 @@ function displayInCompleted(){
     displayInPlan();
     displayInProgress();
     completed.forEach(task => {
-    const h1 = document.createElement("h1");
-    h1.textContent = task.title;
-    completedDiv.appendChild(h1)
-
-    //display details
-    const p = document.createElement("p");
-    p.textContent = task.details;
-    completedDiv.appendChild(p);
-
-    //display progress
-    const p1 = document.createElement("p");
-    p1.textContent = task.progress;
-    completedDiv.appendChild(p1);
-
-    //delete button
-    const deleteBtn = document.createElement("button");
-    completedDiv.appendChild(deleteBtn);
-    deleteBtn.textContent = "Move to Trash";
-    deleteBtn.addEventListener("click" , () => {
-        task.delete();
-        completed.splice(task.index,1);
-        displayInCompleted();
+    generateElement("h1", "title",task, completedDiv) //displays title
+    generateElement("p", "details", task, completedDiv) //displays details
+    generateElement("p", "progress", task, completedDiv) // displays progress
+    generateButtons(task, completedDiv)
     })
-})
 }
+
+const trashDiv = document.querySelector("#trashBinTasks");
+function displayInTrashBin(){
+    trashDiv.innerHTML = "";
+    trashBin.forEach(task => {
+    generateElement("h1", "title",task, trashDiv) //displays title
+    generateElement("p", "details", task, trashDiv) //displays details
+    generateElement("p", "progress", task, trashDiv) // displays progress
+    recoverAndDeleteFromTrashBin(task);
+    })
+}
+
 
 //add important tasks (star) functionlaity
 //can add more buttons in future
-//add drag and drop functionlaity
+//add drag and drop
+
+ function addTestingData() {
+    const plan = new Task("Plan", "1", "2")
+    inPlan.push(plan);
+    plan.currentStatus = "inPlan";
+    const progress = new Task("Pro", "1", "2")
+    inProgress.push(progress);
+    progress.currentStatus = "inProgress";
+    const completeed = new Task("Comp", "1",  "2")
+    completed.push(completeed)
+    completeed.currentStatus = "completed";
+    refreshAll();
+}

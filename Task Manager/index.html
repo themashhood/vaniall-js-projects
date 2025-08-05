@@ -8,6 +8,8 @@
 </head>
 <body>
     <h1 class="titleHeading">Primus - The Task Manager</h1><br>
+    <button id="addNewTaskBtn" onclick="openAddToTaskForm()">Add New Task</button> 
+    <button id="trashBinOpenBtn" onclick="openTrashBin()">TrashBin</button>
     <br><div class="taskManagerWindow">
         <div class="inPlan">
             <h1 id="mainheading">In Plans</h1>
@@ -31,7 +33,13 @@
             </div>
         </div>
     </div>
-    <button id="addNewTaskBtn" onclick="openAddToTaskForm()">Add New Task</button> 
+    <div class="trashBinWindow">
+        <h1 id="trashBinHeading">Trash Bin</h1>
+        <div id="trashBinTasks">
+
+        </div>
+        <button id="trashBinCloseBtn" onclick="closeTrashBin()">Close Trash Bin</button>
+    </div>
     <div class="addNewTask">
         <form id="addNewTaskForm">
             <label for="taskTitle">Add Task</label><br>
@@ -45,8 +53,7 @@
             <button id="cancelSubmission" onclick="closeTheForm()">Cancel</button>
         </form>
     </div>
-    
-    <script src="dom.js"></script>
+    <button class="test" onclick="addTestingData()">Add testing data</button>
     <script src="state.js"></script>
 </body>
 </html>
