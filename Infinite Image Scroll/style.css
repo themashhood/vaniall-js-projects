@@ -1,0 +1,22 @@
+body{
+    background-color: #8AA624;
+}
+
+.mainHeading{
+    text-align: center;
+    color: white;
+}
+
+.imageWindow{
+    display: flexbox;
+    gap: 200px;
+    padding-left: 200px;
+    padding-right: 50px;
+    justify-content: center;
+}
+
+
+img{
+    border-radius: 10px;
+    margin: 25px;
+}
